@@ -21,7 +21,7 @@ router.get('/', [authentificator], async (req: Request, res: Response) => {
       try {
         await db.UserData.build({ email }).validate({ fields: ['email'] });
       } catch (err) {
-        return res.status(400).json({ message: `Invalid request: Field "email" is not an email!` });
+        return res.status(400).json({ message: `Invalid request: Fields email are invalid!` });
       }
 
       const userPdf = await db.UserPdf.findOne({ where: { email } });

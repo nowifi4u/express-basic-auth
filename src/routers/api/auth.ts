@@ -85,7 +85,7 @@ router.get('/', [authentificator], async (req: Request, res: Response) => {
     // @ts-expect-error
     const userid: string = req.user.id;
 
-    const userData: IUserData = (await db.UserData.findByPk(userid)) as any;
+    const userData = await db.UserData.findByPk(userid);
     return res.json(userData);
   } catch (err) {
     hostErrorHandler(err);
