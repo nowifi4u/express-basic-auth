@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es2019",
     "lib": ["esnext", "esnext.array", "esnext.asynciterable", "esnext.intl", "esnext.symbol"],
     "sourceMap": false,
@@ -20,7 +20,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "newLine": "lf",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+
+    "baseUrl": "src",
+    "paths": {
+      "#src/*": ["*"]
+    }
   },
   "include": ["src/**/*.ts"]
 }
