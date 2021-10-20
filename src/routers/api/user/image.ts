@@ -15,7 +15,7 @@ router.get('/', [authentificator], async (req: Request, res: Response) => {
 
     const userImage = await db.UserImage.findByPk(userid);
     // @ts-expect-error
-    return res.json({ image: userImage.image });
+    return res.json({ pdf: userImage.image, imageType: userImage.imageType });
   } catch (err) {
     hostErrorHandler(err);
     return requestErrorHandler(res);
@@ -27,7 +27,7 @@ router.delete('/', [authentificator], async (req: Request, res: Response) => {
     // @ts-expect-error
     const userid: string = req.user.id;
 
-    await db.UserImage.update({ image: null }, { where: { id: userid } });
+    await db.UserImage.update({ image: null, imageType: null }, { where: { id: userid } });
     return res.json({ message: 'ok' });
   } catch (err) {
     hostErrorHandler(err);
@@ -56,7 +56,10 @@ router.put('/', [authentificator], (req: Request, res: Response) => {
         });
       }
 
-      await db.UserImage.update({ image: req.file.buffer.toString('base64') }, { where: { id: userid } });
+      await db.UserImage.update(
+        { image: req.file.buffer.toString('base64'), imageType: req.file.mimetype },
+        { where: { id: userid } },
+      );
       return res.json({ message: 'ok' });
       // eslint-disable-next-line no-catch-shadow
     } catch (err) {

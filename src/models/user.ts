@@ -46,6 +46,13 @@ export const template: ModelAttributes = {
     type: DataTypes.TEXT,
     allowNull: true,
   },
+  imageType: {
+    type: DataTypes.STRING(32),
+    allowNull: true,
+    validate: {
+      is: /^image/,
+    },
+  },
   pdf: {
     type: DataTypes.BLOB,
     allowNull: true,
@@ -64,5 +71,6 @@ export interface IUser {
   firstName: string;
   lastName: string;
   image: string | null;
+  imageType: string | null;
   pdf: Buffer | null;
 }

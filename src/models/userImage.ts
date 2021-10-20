@@ -6,6 +6,7 @@ export default function UserModel(sql: Sequelize) {
     id: template.id,
     email: template.email,
     image: template.image,
+    imageType: template.imageType,
   });
 }
 
@@ -13,4 +14,5 @@ export interface IUserImage {
   id: string;
   email: string;
   image: string | null;
+  imageType: string | null;
 }
