@@ -53,6 +53,5 @@ while (true) {
     console.log(await eval(c.command));
   } catch (err: any) {
     console.log(err);
-    if (err?.stack) console.log(err.stack);
   }
 }
