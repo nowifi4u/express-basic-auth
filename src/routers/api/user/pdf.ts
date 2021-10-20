@@ -21,12 +21,12 @@ router.get('/', [authentificator], async (req: Request, res: Response) => {
       try {
         await db.UserData.build({ email }).validate({ fields: ['email'] });
       } catch (err) {
-        return res.status(400).json(`Invalid request: Field "email" is not an email!`);
+        return res.status(400).json({ message: `Invalid request: Field "email" is not an email!` });
       }
 
       const userPdf = await db.UserPdf.findOne({ where: { email } });
 
-      if (!userPdf) return res.status(404).json(`Email "${email}" not found!`);
+      if (!userPdf) return res.status(404).json({ message: `Email "${email}" not found!` });
       // @ts-expect-error
       return res.json({ pdf: userPdf.pdf?.toString('base64') ?? null });
     }

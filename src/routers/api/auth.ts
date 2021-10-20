@@ -28,7 +28,7 @@ router.put('/', [validatePassword], async (req: Request, res: Response) => {
       await db.User.build({ email, firstName, lastName }).validate({ fields: ['email', 'firstName', 'lastName'] });
     } catch (err: any) {
       const fields: string = err.errors.map((e: any) => e.path).join(',');
-      return res.status(400).json(`Invalid request: Field ${fields} must be set!`);
+      return res.status(400).json({ message: `Invalid request: Field ${fields} must be set!` });
     }
 
     {
@@ -64,7 +64,7 @@ router.post('/', [validatePassword], async (req: Request, res: Response) => {
       await db.UserAuth.build({ email }).validate({ fields: ['email'] });
     } catch (err: any) {
       const fields: string = err.errors.map((e: any) => e.path).join(',');
-      return res.status(400).json(`Invalid request: Fields ${fields} are invalid!`);
+      return res.status(400).json({ message: `Invalid request: Fields ${fields} are invalid!` });
     }
 
     const user: IUserAuth | null = (await db.UserAuth.findOne({ where: { email } })) as any;
@@ -121,7 +121,7 @@ router.patch('/', [authentificator, validatePassword], async (req: Request, res:
         if (keys.length) await db.UserData.build(patches).validate({ fields: keys });
       } catch (err: any) {
         const fields: string = err.errors.map((e: any) => e.path).join(',');
-        return res.status(400).json(`Invalid request: Fields ${fields} are invalid!`);
+        return res.status(400).json({ message: `Invalid request: Fields ${fields} are invalid!` });
       }
     }
 
