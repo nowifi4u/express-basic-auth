@@ -1,25 +1,25 @@
-import { Model, ModelAttributes, Sequelize } from 'sequelize';
-import { DataType } from 'sequelize-typescript';
+import { Model, ModelAttributes, Sequelize, default as sequelize } from 'sequelize';
+const { DataTypes } = sequelize;
 
 export const template: ModelAttributes<Model, Model['_attributes']> = {
   id: {
-    type: DataType.UUID,
+    type: DataTypes.UUID,
     primaryKey: true,
     allowNull: false,
     unique: true,
-    defaultValue: DataType.UUIDV4,
+    defaultValue: DataTypes.UUIDV4,
   },
   password: {
-    type: DataType.STRING(72),
+    type: DataTypes.STRING(72),
     allowNull: false,
   },
   passwordAt: {
-    type: DataType.TIME,
+    type: DataTypes.TIME,
     allowNull: false,
-    defaultValue: DataType.NOW,
+    defaultValue: DataTypes.NOW,
   },
   email: {
-    type: DataType.STRING(64),
+    type: DataTypes.STRING(64),
     allowNull: false,
     unique: true,
     validate: {
@@ -27,7 +27,7 @@ export const template: ModelAttributes<Model, Model['_attributes']> = {
     },
   },
   firstName: {
-    type: DataType.STRING(32),
+    type: DataTypes.STRING(32),
     allowNull: false,
     validate: {
       min: 2,
@@ -35,7 +35,7 @@ export const template: ModelAttributes<Model, Model['_attributes']> = {
     },
   },
   lastName: {
-    type: DataType.STRING(32),
+    type: DataTypes.STRING(32),
     allowNull: false,
     validate: {
       min: 2,
@@ -43,11 +43,11 @@ export const template: ModelAttributes<Model, Model['_attributes']> = {
     },
   },
   image: {
-    type: DataType.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   pdf: {
-    type: DataType.BLOB,
+    type: DataTypes.BLOB,
     allowNull: true,
   },
 };
