@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { db } from '#src/connector';
 import { hostErrorHandler, requestErrorHandler } from '#src/errorHandlers';
 
@@ -9,32 +9,38 @@ import { IUser } from '#src/models/user';
 
 const router = Router();
 
-router.get('/', [authentificator], async (req: Request, res: Response) => {
+router.get('/', [authentificator], async (req: Request, res: Response, next: NextFunction) => {
   try {
     if ('email' in req.body) {
-      const email = req.body.email;
-
-      if (typeof email !== 'string') {
-        return res.status(400).json({ message: 'Invalid query type' });
-      }
-
-      try {
-        await db.UserData.build({ email }).validate({ fields: ['email'] });
-      } catch (err) {
-        return res.status(400).json({ message: `Invalid request: Fields email are invalid!` });
-      }
-
-      const userPdf = await db.UserPdf.findOne({ where: { email } });
-
-      if (!userPdf) return res.status(404).json({ message: `Email "${email}" not found!` });
-      // @ts-expect-error
-      return res.json({ pdf: userPdf.pdf?.toString('base64') ?? null });
+      return next();
     }
 
     // @ts-expect-error
     const userid: string = req.user.id;
 
     const userPdf = await db.UserPdf.findByPk(userid);
+    // @ts-expect-error
+    return res.json({ pdf: userPdf.pdf?.toString('base64') ?? null });
+  } catch (err) {
+    hostErrorHandler(err);
+    return requestErrorHandler(res);
+  }
+});
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const email = req.body.email;
+
+    try {
+      await db.UserData.build({ email }).validate({ fields: ['email'] });
+    } catch (err) {
+      return res.status(400).json({ message: `Invalid request: Fields email are invalid!` });
+    }
+
+    const userPdf = await db.UserPdf.findOne({ where: { email } });
+
+    if (!userPdf) return res.status(404).json({ message: `Email "${String(email)}" not found!` });
     // @ts-expect-error
     return res.json({ pdf: userPdf.pdf?.toString('base64') ?? null });
   } catch (err) {

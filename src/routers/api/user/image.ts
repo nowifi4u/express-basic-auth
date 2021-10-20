@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { db } from '#src/connector';
 import { hostErrorHandler, requestErrorHandler } from '#src/errorHandlers';
 
@@ -8,12 +8,38 @@ import { imageConfig, checkImageSize, multerImage } from '#src/services/image';
 
 const router = Router();
 
-router.get('/', [authentificator], async (req: Request, res: Response) => {
+router.get('/', [authentificator], async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if ('email' in req.body) {
+      return next();
+    }
+
     // @ts-expect-error
     const userid: string = req.user.id;
 
     const userImage = await db.UserImage.findByPk(userid);
+    // @ts-expect-error
+    return res.json({ image: userImage.image, imageType: userImage.imageType });
+  } catch (err) {
+    hostErrorHandler(err);
+    return requestErrorHandler(res);
+  }
+});
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const email = req.body.email;
+
+    try {
+      await db.UserData.build({ email }).validate({ fields: ['email'] });
+    } catch (err) {
+      return res.status(400).json({ message: `Invalid request: Fields email are invalid!` });
+    }
+
+    const userImage = await db.UserImage.findOne({ where: { email } });
+
+    if (!userImage) return res.status(404).json({ message: `Email "${String(email)}" not found!` });
     // @ts-expect-error
     return res.json({ pdf: userImage.image, imageType: userImage.imageType });
   } catch (err) {
