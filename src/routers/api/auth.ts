@@ -51,7 +51,7 @@ router.put('/', [validatePassword], async (req: Request, res: Response) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.get('/', [validatePassword], async (req: Request, res: Response) => {
+router.post('/', [validatePassword], async (req: Request, res: Response) => {
   try {
     if (!validationResult(req).isEmpty()) {
       return res.status(400).json({ message: 'Invalid request: Fields password are invalid!' });
