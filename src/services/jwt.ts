@@ -6,6 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { db } from '#src/connector';
 import { IUserAuth } from '#src/models/userAuth';
+import { hostErrorHandler } from '#src/errorHandlers';
 
 export function cutPassword(pswrd: string): string {
   return pswrd.slice(0, 5);
@@ -24,7 +25,8 @@ passport.use(
           return done(null, user);
         })
         .catch(err => {
-          return done(err);
+          hostErrorHandler(err);
+          return done('Server unavailable');
         });
     },
   ),
