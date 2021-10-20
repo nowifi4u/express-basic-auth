@@ -1,7 +1,7 @@
-import { Model, ModelAttributes, Sequelize, default as sequelize } from 'sequelize';
+import { ModelAttributes, Sequelize, default as sequelize } from 'sequelize';
 const { DataTypes } = sequelize;
 
-export const template: ModelAttributes<Model, Model['_attributes']> = {
+export const template: ModelAttributes = {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
