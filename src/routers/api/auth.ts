@@ -11,6 +11,7 @@ import { generate as jwtGenerate, authentificator } from '#src/services/jwt';
 
 import { validatePassword } from '#src/config/validators';
 import { IUserAuth } from '#src/models/userAuth';
+import { IUserData } from '#src/models/userData';
 
 const router = Router();
 
@@ -73,6 +74,19 @@ router.post('/', [validatePassword], async (req: Request, res: Response) => {
 
     const token = jwtGenerate(user);
     return res.json({ token });
+  } catch (err) {
+    hostErrorHandler(err);
+    return requestErrorHandler(res);
+  }
+});
+
+router.get('/', [authentificator], async (req: Request, res: Response) => {
+  try {
+    // @ts-expect-error
+    const userid: string = req.user.id;
+
+    const userData: IUserData = (await db.UserData.findByPk(userid)) as any;
+    return res.json(userData);
   } catch (err) {
     hostErrorHandler(err);
     return requestErrorHandler(res);
