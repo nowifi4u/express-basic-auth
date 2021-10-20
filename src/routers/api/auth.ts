@@ -11,7 +11,6 @@ import { generate as jwtGenerate, authentificator } from '#src/services/jwt';
 
 import { validatePassword } from '#src/config/validators';
 import { IUserAuth } from '#src/models/userAuth';
-import { IUserData } from '#src/models/userData';
 
 const router = Router();
 
@@ -82,6 +81,24 @@ router.post('/', [validatePassword], async (req: Request, res: Response) => {
 
 router.get('/', [authentificator], async (req: Request, res: Response) => {
   try {
+    if ('email' in req.body) {
+      const email = req.body.email;
+
+      if (typeof email !== 'string') {
+        return res.status(400).json({ message: 'Invalid query type' });
+      }
+
+      try {
+        await db.UserData.build({ email }).validate({ fields: ['email'] });
+      } catch (err) {
+        return res.status(400).json({ message: `Invalid request: Fields email are invalid!` });
+      }
+
+      const userData = await db.UserData.findOne({ where: { email } });
+
+      if (!userData) return res.status(404).json({ message: `Email "${email}" not found!` });
+      return res.json(userData);
+    }
     // @ts-expect-error
     const userid: string = req.user.id;
 
