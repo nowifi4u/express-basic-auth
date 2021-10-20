@@ -1,3 +1,3 @@
-# Edit me!
+# Express Basic API auth server
 
-Edit me!
+Useful text here
