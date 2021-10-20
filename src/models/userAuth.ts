@@ -5,7 +5,7 @@ export default function UserModel(sql: Sequelize) {
   return sql.define('users', {
     id: template.id,
     password: template.password,
-    password_timestamp: template.password_timestamp,
+    passwordAt: template.passwordAt,
     email: template.email,
   });
 }
@@ -13,6 +13,6 @@ export default function UserModel(sql: Sequelize) {
 export interface IUserAuth {
   id: string;
   password: string;
-  password_timestamp: Date;
+  passwordAt: Date;
   email: string;
 }

@@ -13,7 +13,7 @@ export const template: ModelAttributes<Model, Model['_attributes']> = {
     type: DataType.STRING(72),
     allowNull: false,
   },
-  password_timestamp: {
+  passwordAt: {
     type: DataType.TIME,
     allowNull: false,
     defaultValue: DataType.NOW,
@@ -59,7 +59,7 @@ export default function UserModel(sql: Sequelize) {
 export interface IUser {
   id: string;
   password: string;
-  password_timestamp: string;
+  passwordAt: string;
   email: string;
   firstName: string;
   lastName: string;

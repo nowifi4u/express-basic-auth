@@ -129,7 +129,7 @@ router.patch('/', [authentificator, validatePassword], async (req: Request, res:
       if (!validationResult(req).isEmpty()) {
         return res.status(400).json('Invalid request: Fields password are invalid!');
       }
-      patches.password_timestamp = sequelize.fn('now');
+      patches.passwordAt = sequelize.fn('now');
       patches.password = bcryptGenerate(req.body.password);
     }
 

@@ -20,7 +20,7 @@ passport.use(
     (jwtPayload: any, done) => {
       db.UserAuth.findOne({ where: { id: jwtPayload.id } })
         .then((user: any) => {
-          if (jwtPayload.timestamp !== user.password_timestamp.getTime()) return done('Invalid token');
+          if (jwtPayload.timestamp !== user.passwordAt.getTime()) return done('Invalid token');
           return done(null, user);
         })
         .catch(err => {
@@ -33,7 +33,7 @@ passport.use(
 export function generate(user: IUserAuth): string {
   const payload = {
     id: user.id,
-    timestamp: user.password_timestamp.getTime(),
+    timestamp: user.passwordAt.getTime(),
   };
   return jwt.sign(payload, options.secret, options.options);
 }
