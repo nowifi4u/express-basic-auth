@@ -9,3 +9,5 @@ export const http: IHttpOptions | undefined = {
 };
 
 export const https: IHttpsOptions | undefined = undefined;
+
+export const debug: boolean = true;

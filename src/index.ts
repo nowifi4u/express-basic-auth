@@ -14,7 +14,7 @@ if (config.cors) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(passport.initialize());
-app.use((await import('morgan')).default('combined'));
+if (config.debug) app.use((await import('morgan')).default('combined'));
 
 console.log(`Registering routers...`);
 app.use('/', routers);
