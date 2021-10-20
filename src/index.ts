@@ -33,9 +33,10 @@ if (config.https) {
 }
 
 import prompts from 'prompts';
-// @ts-expect-error
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { db } from './connector';
+import { db, sql } from './connector';
+// Fix to make db being loaded
+db;
+sql;
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 while (true) {
   const c = await prompts({
