@@ -4,7 +4,7 @@ import { db } from '#src/connector';
 import { hostErrorHandler, requestErrorHandler } from '#src/errorHandlers';
 import { validationResult } from 'express-validator';
 import * as bcrypt from 'bcrypt';
-import * as sequelize from 'sequelize';
+import sequelize from 'sequelize';
 
 import { generate as bcryptGenerate } from '#src/services/bcrypt';
 import { generate as jwtGenerate, authentificator } from '#src/services/jwt';
