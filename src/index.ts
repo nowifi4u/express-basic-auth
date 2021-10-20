@@ -47,6 +47,11 @@ while (true) {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!c.command) process.exit(0);
 
-  // eslint-disable-next-line no-eval
-  console.log(await eval(c.command));
+  try {
+    // eslint-disable-next-line no-eval
+    console.log(await eval(c.command));
+  } catch (err: any) {
+    console.log(err);
+    if (err?.stack) console.log(err.stack);
+  }
 }
