@@ -11,8 +11,8 @@ const router = Router();
 
 router.get('/', [authentificator], async (req: Request, res: Response) => {
   try {
-    if ('email' in req.query) {
-      const email = req.query.email;
+    if ('email' in req.body) {
+      const email = req.body.email;
 
       if (typeof email !== 'string') {
         return res.status(400).json({ message: 'Invalid query type' });
